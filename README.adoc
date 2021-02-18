@@ -4,7 +4,7 @@ ifdef::env-github[:outfilesuffix: .adoc]
 
 == Copyright and Licensing
 
-Copyright (C) 2018 Arne Meier
+Copyright (C) 2020 Arne Meier
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
