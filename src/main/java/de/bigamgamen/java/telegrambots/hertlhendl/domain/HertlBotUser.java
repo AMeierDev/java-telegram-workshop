@@ -8,13 +8,15 @@ import one.microstream.persistence.types.Persister;
 public class HertlBotUser {
 
 	private Long chatId;
-	private List<HertlBotBestellung> bestellungen = new ArrayList<>();
+	private String userName;
+	private List<HertlBotOrder> bestellungen = new ArrayList<>();
 
-	public HertlBotUser() {
-		
+	public HertlBotUser(Long chatId, String userName) {
+		this.chatId = chatId;
+		this.userName = userName;
 	}
 	
-	public synchronized void addBestellung(HertlBotBestellung bestellung, final Persister persister)
+	public synchronized void addBestellung(HertlBotOrder bestellung, final Persister persister)
 	{
 		bestellung.setUser(this);
 		this.bestellungen.add(bestellung);
@@ -27,11 +29,9 @@ public class HertlBotUser {
 		return this.chatId.equals(chatId);
 	}
 	
-	public HertlBotUser(Long chatId) {
-		this.chatId = chatId;
-	}
+	
 
-	public List<HertlBotBestellung> getBestellungen() {
+	public List<HertlBotOrder> getBestellungen() {
 		return new ArrayList<>(bestellungen);
 	}
 	
@@ -41,6 +41,16 @@ public class HertlBotUser {
 
 	public Long getChatId() {
 		return chatId;
+	}
+
+	public String getUserName()
+	{
+		return userName;
+	}
+
+	public void setUserName(String userName)
+	{
+		this.userName = userName;
 	}
 
 }

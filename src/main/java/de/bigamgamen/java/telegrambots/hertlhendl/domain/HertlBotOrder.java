@@ -3,25 +3,29 @@ package de.bigamgamen.java.telegrambots.hertlhendl.domain;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.bigamgamen.java.helper.Pricehelper;
 import one.microstream.persistence.types.Persister;
 
-public class HertlBotBestellung {
+public class HertlBotOrder {
 	
+	private static final String BESTELLUNG_COMMITED = "BESTÄTIGT";
 	private static final String BESTELLUNG_TITLE = "Ihre Bestellung:";
 	private static final String DD_MM_YYYY = "dd-MM-yyyy";
 	private int index;
 	private LocalDate bestellDatum;
 	private HertlBotUser user;
-	private List<HertlBotPosition> positionen;
+	private List<HertlBotPosition> positionen = new ArrayList<>();
+	private Boolean commited = false;
+	private Boolean closed = false;
 	
-	public HertlBotBestellung() {
+	public HertlBotOrder() {
 		
 	}
 	
-	public HertlBotBestellung(final HertlBotUser user, final List<HertlBotPosition> positionen) {
+	public HertlBotOrder(final HertlBotUser user, final List<HertlBotPosition> positionen) {
 		this.bestellDatum = LocalDate.now();
 		this.user = user;
 		this.positionen = positionen;
@@ -42,7 +46,7 @@ public class HertlBotBestellung {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder(BESTELLUNG_TITLE + " " +this.index);
-		sb.append(" Vom: "+this.getBestellDatumFormated()+System.lineSeparator());
+		sb.append(" Für: " + this.getUser().getUserName()).append(" Vom: " + this.getBestellDatumFormated() + "." + (isCommited() ? BESTELLUNG_COMMITED:"") + System.lineSeparator());
 		this.positionen.forEach(pos -> sb.append(pos.toString()+System.lineSeparator()));
 		sb.append("Summe: "+ this.getSumme());
 		return sb.toString();
@@ -55,11 +59,6 @@ public class HertlBotBestellung {
 			summe = summe.add(pos.getPositionPrice());
 		}
 		return Pricehelper.getPriceAsEuroString(summe);
-	}
-	
-	private void sumToBigInteger(BigInteger addingTo, final BigInteger addition)
-	{
-		addingTo = addingTo.add(addition);
 	}
 
 	public HertlBotUser getUser() {
@@ -89,6 +88,26 @@ public class HertlBotBestellung {
 
 	public void setIndex(final int index) {
 		this.index = index;
+	}
+
+	public Boolean isClosed()
+	{
+		return closed;
+	}
+
+	public void setClosed(Boolean closed)
+	{
+		this.closed = closed;
+	}
+	
+	public Boolean isCommited()
+	{
+		return this.commited;
+	}
+	
+	public void setCommited(Boolean commited)
+	{
+		this.commited = commited;
 	}
 	
 	
